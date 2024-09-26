@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google API Test Page</title>
-    <!-- Google Sign-In and Firebase SDK -->
+    <!-- Google Sign-In script -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
-    
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -85,20 +82,26 @@
     <script>
         // Handle Google login response
         function handleCredentialResponse(response) {
-            // Decode JWT token
-            const decodedToken = jwt_decode(response.credential);
+            console.log('Google login response:', response); // Log the raw response
 
-            // Populate user information
-            document.getElementById('name').value = decodedToken.name;
-            document.getElementById('email').value = decodedToken.email;
-            document.getElementById('user-name').innerText = decodedToken.name;
-            document.getElementById('user-email').innerText = decodedToken.email;
+            try {
+                // Decode JWT token
+                const decodedToken = jwt_decode(response.credential);
+                console.log('Decoded token:', decodedToken); // Log the decoded token
 
-            // Show user info and feedback form
-            document.getElementById('login-info').classList.remove('hidden');
-            document.getElementById('feedback-form').style.display = 'block';
+                // Populate user information
+                document.getElementById('name').value = decodedToken.name;
+                document.getElementById('email').value = decodedToken.email;
+                document.getElementById('user-name').innerText = decodedToken.name;
+                document.getElementById('user-email').innerText = decodedToken.email;
+
+                // Show user info and feedback form
+                document.getElementById('login-info').classList.remove('hidden');
+                document.getElementById('feedback-form').style.display = 'block';
+            } catch (error) {
+                console.error('Error decoding token:', error); // Log any error in the token decoding process
+            }
         }
-
     </script>
 </body>
 </html>
